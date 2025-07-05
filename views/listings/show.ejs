@@ -1,0 +1,27 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-lg rounded-4">
+        <img src="<%= listing.image.url %>" class="card-img-top rounded-top-4" alt="<%= listing.title %> image" />
+        <div class="card-body">
+          <h3 class="card-title fw-bold listing-show-heading"><%= listing.title %></h3>
+          <ul class="list-group listing-show-details mb-4">
+            <li class="list-group-item listing-show-item"><strong>Description:</strong> <%= listing.description %></li>
+            <li class="list-group-item listing-show-item"><strong>Price:</strong> ₹<%= listing.price %></li>
+            <li class="list-group-item listing-show-item"><strong>Location:</strong> <%= listing.location %>, <%= listing.country %></li>
+          </ul>
+
+          <a href="/listings/<%= listing._id %>/edit" class="btn btn-primary listing-show-edit-btn">✏️ Edit</a>
+
+          <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" class="d-inline listing-show-delete-form">
+            <button class="btn btn-danger listing-show-delete-btn" onclick="return confirm('Are you sure you want to delete this listing?')">
+              🗑️ Delete
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
