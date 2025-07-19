@@ -1,0 +1,109 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="container py-5">
+  <!-- Listing Details -->
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+      <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+        <img src="<%= listing.image.url %>" class="card-img-top" alt="<%= listing.title %> image" />
+        <div class="card-body p-4">
+          <h2 class="card-title fw-bold text-primary mb-3"><%= listing.title %></h2>
+          <ul class="list-group list-group-flush mb-4">
+            <li class="list-group-item"><strong>Description:</strong> <%= listing.description %></li>
+            <li class="list-group-item"><strong>Price:</strong> ₹<%= listing.price %></li>
+            <li class="list-group-item"><strong>Location:</strong> <%= listing.location %>, <%= listing.country %></li>
+          </ul>
+          <div class="d-flex gap-2">
+            <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-primary px-4 rounded-pill">✏️ Edit</a>
+            <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" class="d-inline">
+              <button class="btn btn-outline-danger px-4 rounded-pill"
+                onclick="return confirm('Are you sure you want to delete this listing?')">🗑️ Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Review Section -->
+  <div class="row justify-content-center mt-5">
+    <div class="col-md-10 col-lg-8">
+      <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-5">
+          <h4 class="mb-4 text-center text-primary fw-semibold">Leave a Review</h4>
+
+          <form id="reviewForm" action="/listings/<%= listing.id %>/reviews" method="POST" novalidate>
+            <!-- Rating -->
+            <div class="mb-4">
+              <label for="rating" class="form-label">Rating: <span id="rating-value" class="fw-bold">3</span></label>
+              <input type="range" min="1" max="5" step="1" name="review[rating]" class="form-range" id="rating" required>
+              <div class="form-text">Rate between 1 (low) to 5 (high)</div>
+            </div>
+
+            <!-- Comment -->
+            <div class="mb-4">
+              <label for="comment" class="form-label">Comment</label>
+              <textarea name="review[comment]" id="comment" class="form-control rounded-3" rows="4"
+                placeholder="Write your thoughts..." required minlength="10"></textarea>
+              <div class="invalid-feedback">Please write at least 10 characters.</div>
+            </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill shadow">Submit Review</button>
+            </div>
+          </form>
+
+          <!-- All Reviews -->
+          <hr class="my-5">
+          <h4 class="text-center text-dark fw-bold mb-4">All Reviews</h4>
+          <div class="row g-4">
+            <% for (let review of listing.reviews) { %>
+              <div class="col-12">
+                <div class="card h-100 border-0 shadow-sm rounded-4">
+                  <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div>
+                          <h6 class="mb-0 fw-semibold"><%= review.author?.username || "Anonymous" %></h6>
+                          <small class="text-muted">
+                            <%= new Date(review.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+                          </small>
+                        </div>
+                        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">★ <%= review.rating %>/5</span>
+                      </div>
+                      <p class="text-muted mt-2 mb-3"><%= review.comment %></p>
+                    </div>
+                    <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST" class="text-end mt-auto">
+                      <button class="btn btn-sm btn-outline-danger rounded-pill">🗑️ Delete Review</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slider & Validation Script -->
+<script>
+  const ratingSlider = document.getElementById("rating");
+  const ratingValue = document.getElementById("rating-value");
+  const commentField = document.getElementById("comment");
+  const form = document.getElementById("reviewForm");
+
+  ratingSlider.addEventListener("input", () => {
+    ratingValue.textContent = ratingSlider.value;
+  });
+
+  form.addEventListener("submit", (e) => {
+    if (commentField.value.trim().length < 10) {
+      commentField.classList.add("is-invalid");
+      e.preventDefault();
+    } else {
+      commentField.classList.remove("is-invalid");
+    }
+  });
+</script>
