@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// Define image as an embedded object
 const imageSchema = new Schema({
   url: String,
   filename: String
-}, { _id: false }); // prevent auto _id for nested schema
+}, { _id: false });
 
 const listingSchema = new Schema({
   title: {
@@ -13,10 +12,16 @@ const listingSchema = new Schema({
     required: true,
   },
   description: String,
-  image: imageSchema, // 👈 Now it's an object, matching your data
+  image: imageSchema,
   price: Number,
   location: String,
   country: String,
+  reviews: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Review",
+    }
+  ]
 });
 
 const Listing = mongoose.model("Listing", listingSchema);
