@@ -2,7 +2,7 @@
 
 Welcome to **Travel Go** — a full-stack Airbnb-style web application where users can explore, list, and review beautiful travel destinations across the globe. Built with **Node.js**, **Express**, **MongoDB**, and **Bootstrap**, Travel Go aims to provide a seamless travel listing and booking experience.
 
-![Travel Go Banner]<img width="958" height="563" alt="image" src="https://github.com/user-attachments/assets/3f73ad63-7847-4967-a464-83d40676566b" />
+<img width="958" height="563" alt="image" src="https://github.com/user-attachments/assets/3f73ad63-7847-4967-a464-83d40676566b" />
 
 
 ---
