@@ -5,6 +5,7 @@ const Listing = require("./models/listing.js");
 const path = require("path");
 const Review = require("./models/review");
 const methodOverride = require("method-override");
+const listings = require("./routes/listing.js");
 const engine = require("ejs-mate"); // ✅ FIXED: added `const`
 
 // Middleware
@@ -56,11 +57,7 @@ app.post("/listings/:id/reviews", async (req, res) => {
 });
 
 
-// INDEX ROUTE
-app.get("/listings", async (req, res) => {
-  let allListing = await Listing.find({});
-  res.render("listings/index.ejs", { allListing }); // ✅ "./" not required
-});
+
 
 const { reviewSchema } = require('./schema');
 
@@ -72,36 +69,13 @@ const validateReview = (req, res, next) => {
   next();
 };
 
-// NEW FORM ROUTE
-app.get("/listings/new", (req, res) => {
-  res.render("listings/new.ejs");
-});
-
-// CREATE ROUTE
-app.post("/listings", async (req, res) => {
-  const newListing = new Listing(req.body.listing);
-  await newListing.save();
-  res.redirect("/listings");
-});
 
 
 
-// EDIT FORM ROUTE
-app.get("/listings/:id/edit", async (req, res) => {
-  const { id } = req.params;
-  res.render("listings/edit.ejs", { listing });
-  const listing = await Listing.findById(req.params.id).populate('reviews');
-res.render("listings/show", { listing });
-});
 
-// UPDATE ROUTE
-app.put("/listings/:id", async (req, res) => {
-  const { id } = req.params;
-  await Listing.findByIdAndUpdate(id, req.body.listing, {
-    runValidators: true,
-  });
-  res.redirect(`/listings/${id}`);
-});
+
+
+
 //  delete review route
 app.delete("/listings/:id/reviews/:reviewID", async (req, res) => {
   const { id, reviewID } = req.params;
@@ -117,25 +91,17 @@ app.delete("/listings/:id/reviews/:reviewID", async (req, res) => {
 
 
 
-// DELETE ROUTE
-app.delete("/listings/:id", async (req, res) => {
-  const { id } = req.params;
-  await Listing.findByIdAndDelete(id);
-  res.redirect("/listings");
-});
 
 
-// SHOW ROUTE
-app.get("/listings/:id", async (req, res) => {
-  const { id } = req.params;
-  const listing = await Listing.findById(req.params.id).populate("reviews");
-  res.render("listings/show.ejs", { listing });
-});
+
+
 
 // ROOT ROUTE
 app.get("/", (req, res) => {
   res.send("hi I am root");
 });
+
+app.use("/listings", listings);
 
 app.get("/",(req,res)=>{
   res.send();
