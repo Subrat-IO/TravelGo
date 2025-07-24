@@ -5,6 +5,14 @@ const app = express();
 const userRoutes = require("./routers/user");
 const postRoutes = require("./routers/post");
 
+
+app.get("/getcookies", (req, res) => {
+    res.cookie("greet",
+        "Hello"
+    )
+    res.send("sent you some cookies")
+})
+
 // Middleware to parse JSON
 app.use(express.json());
 
