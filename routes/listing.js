@@ -1,5 +1,5 @@
 const express = require("express");
-const { route } = require("../calssroom/routers/user");
+const { route } = require("../classroom/routers/user");
 const router = express.Router();
 const Listing = require("../models/listing"); // or the correct path to your model
 
