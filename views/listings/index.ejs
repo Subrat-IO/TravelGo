@@ -1,7 +1,14 @@
 <% layout("layouts/boilerplate") %>
-
+  <% if (success && success.length > 0) { %>
+    <div class="alert alert-success alert-dismissible fade show fw-semibold text-center" role="alert">
+      <%= success[0] %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% } %>
 <div class="container py-5">
   <h3 class="text-center mb-4 display-6 fw-bold">🌍 Explore Your Destination</h3>
+
+
 
   <div class="row g-4 justify-content-center">
     <% for (let listing of allListing) { %>

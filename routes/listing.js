@@ -28,7 +28,9 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   const newListing = new Listing(req.body.listing);
   await newListing.save();
+  req.flash("success","new listing created successfully");
   res.redirect("/listings");
+  
 });
 
 // EDIT FORM ROUTE
