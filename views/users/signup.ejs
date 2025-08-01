@@ -1,0 +1,66 @@
+<% layout("layouts/boilerplate") %>
+<div class="row mt-3">
+    <div class="col-6 offset-3">
+        <form action="/signup" method="POST" class="p-4 border rounded shadow-sm bg-light needsvalidation" novalidate>
+            <h3 class="text-center mb-4">Create an Account</h3>
+
+            <!-- Username -->
+            <div class="mb-3">
+                <label for="username" class="form-label fw-bold">Username</label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="username" 
+                    name="username" 
+                    placeholder="Enter your username" 
+                    required>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="email" class="form-label fw-bold">Email</label>
+                <input 
+                    type="email" 
+                    class="form-control" 
+                    id="email" 
+                    name="email" 
+                    placeholder="Enter your email" 
+                    required>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+                <label for="password" class="form-label fw-bold">Password</label>
+                <input 
+                    type="password" 
+                    class="form-control" 
+                    id="password" 
+                    name="password" 
+                    placeholder="Enter your password" 
+                    required>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label fw-bold">Confirm Password</label>
+                <input 
+                    type="password" 
+                    class="form-control" 
+                    id="confirmPassword" 
+                    name="confirmPassword" 
+                    placeholder="Re-enter your password" 
+                    required>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+            </div>
+
+            <!-- Login Link -->
+            <p class="text-center mt-3 mb-0">
+                Already have an account? <a href="/login" class="text-decoration-none">Log in</a>
+            </p>
+        </form>
+    </div>
+</div>
