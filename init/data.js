@@ -347,6 +347,248 @@ const sampleListings = [
     location: "Costa Rica",
     country: "Costa Rica",
   },
+   {
+    title: "Cliffside Villa in Santorini",
+    description:
+      "Wake up to panoramic views of the Aegean Sea in this breathtaking cliffside villa.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 3500,
+    location: "Santorini",
+    country: "Greece",
+  },
+  {
+    title: "Ice Hotel Adventure",
+    description:
+      "Stay in a hotel made entirely of ice and snow, featuring incredible sculptures and a unique experience.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1601758003122-78c6f1c56b44?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 2700,
+    location: "Jukkasjärvi",
+    country: "Sweden",
+  },
+  {
+    title: "Floating Cabin in Norway Fjords",
+    description:
+      "Experience the serenity of Norway's fjords from a floating wooden cabin surrounded by nature.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 3200,
+    location: "Geiranger",
+    country: "Norway",
+  },
+  {
+    title: "Underground Cave Suite",
+    description:
+      "Sleep in a cozy underground cave suite with all modern amenities, hidden from the world above.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1583241801059-67a5324c0f8d?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 2100,
+    location: "Cappadocia",
+    country: "Turkey",
+  },
+  {
+    title: "Rainforest Canopy Lodge",
+    description:
+      "Immerse yourself in the jungle with this eco-friendly lodge nestled in the rainforest canopy.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 1700,
+    location: "Amazonas",
+    country: "Brazil",
+  },
+  {
+    title: "Minimalist Desert Dome",
+    description:
+      "Glamp under the desert stars in a minimalist dome with stunning views of the dunes.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 950,
+    location: "Merzouga",
+    country: "Morocco",
+  },
+  {
+    title: "Himalayan Mountain Lodge",
+    description:
+      "Discover tranquility at the top of the world with this cozy Himalayan lodge.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1582719478173-2b8b0e8b0e85?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 2500,
+    location: "Leh",
+    country: "India",
+  },
+  {
+    title: "Venetian Canal Apartment",
+    description:
+      "Enjoy a romantic getaway in Venice with this canal-side apartment offering stunning city views.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 1900,
+    location: "Venice",
+    country: "Italy",
+  },
+  {
+    title: "Remote Lighthouse Stay",
+    description:
+      "Stay in a functioning lighthouse by the sea and experience ultimate solitude and scenic sunsets.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 1400,
+    location: "Nova Scotia",
+    country: "Canada",
+  },
+  {
+    title: "Countryside Barn Loft",
+    description:
+      "A rustic converted barn loft surrounded by meadows and peaceful countryside views.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=60",
+    },
+    price: 800,
+    location: "Vermont",
+    country: "United States",
+  },
+  {
+    title: "Houseboat in Kerala Backwaters",
+    description:
+      "Enjoy a serene stay in a traditional Kerala houseboat amidst lush greenery and calm waters.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.pexels.com/photos/210186/pexels-photo-210186.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 2200,
+    location: "Alleppey",
+    country: "India",
+  },
+  {
+    title: "Tea Estate Stay in Munnar",
+    description:
+      "Wake up to the aroma of fresh tea leaves in this scenic Munnar tea estate cottage.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.pexels.com/photos/158607/tea-plantation-munnar-india-kerala-158607.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 2000,
+    location: "Munnar",
+    country: "India",
+  },
+  {
+    title: "Riverside Camp in Rishikesh",
+    description:
+      "Experience the thrill of riverside camping and adventure sports in Rishikesh.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 1500,
+    location: "Rishikesh",
+    country: "India",
+  },
+  {
+    title: "Desert Camp in Jaisalmer",
+    description:
+      "Stay in luxury tents under the stars in the golden sand dunes of Jaisalmer.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.pexels.com/photos/261187/pexels-photo-261187.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 2500,
+    location: "Jaisalmer",
+    country: "India",
+  },
+  {
+    title: "Hilltop Cottage in Darjeeling",
+    description:
+      "A cozy hilltop cottage with panoramic views of the Himalayas and Darjeeling tea gardens.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.pexels.com/photos/753626/pexels-photo-753626.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 1800,
+    location: "Darjeeling",
+    country: "India",
+  },
+  {
+    title: "Forest Retreat in Jim Corbett",
+    description:
+      "Stay amidst wildlife and greenery in this peaceful retreat near Jim Corbett National Park.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.pexels.com/photos/460775/pexels-photo-460775.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 2300,
+    location: "Ramnagar",
+    country: "India",
+  },
+  {
+    title: "Lake View Cabin in Nainital",
+    description:
+      "Relax in a cozy wooden cabin with a serene view of Nainital Lake.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.pexels.com/photos/1586079/pexels-photo-1586079.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 2000,
+    location: "Nainital",
+    country: "India",
+  },
+  {
+    title: "Coconut Grove Stay in Goa",
+    description:
+      "Stay in a beachside hut surrounded by swaying coconut trees and golden sands.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.pexels.com/photos/240320/pexels-photo-240320.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 2200,
+    location: "Goa",
+    country: "India",
+  },
+  {
+    title: "Mountain Camp in Manali",
+    description:
+      "A riverside camp with bonfire and scenic Himalayan views in Manali.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.pexels.com/photos/356830/pexels-photo-356830.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 1900,
+    location: "Manali",
+    country: "India",
+  },
+  {
+    title: "Waterfall Eco Stay in Meghalaya",
+    description:
+      "Stay close to nature with a stunning waterfall right next to your eco-friendly hut.",
+    image: {
+      filename: "listingimage",
+      url: "https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg?auto=compress&cs=tinysrgb&w=800",
+    },
+    price: 2400,
+    location: "Cherrapunji",
+    country: "India",
+  },
+  
 ];
+
 
 module.exports = { data: sampleListings };

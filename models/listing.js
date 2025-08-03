@@ -21,7 +21,12 @@ const listingSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: "Review",
     }
-  ]
+  ],
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: "User",  // <-- reference to your User model
+    required: true
+  }
 });
 
 const Listing = mongoose.model("Listing", listingSchema);
