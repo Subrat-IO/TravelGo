@@ -17,8 +17,9 @@
             <li class="list-group-item"><strong>Location:</strong> <%= listing.location %>, <%= listing.country %></li>
           </ul>
 
-          <% if (currentUser && listing.owner && listing.owner._id.equals(currentUser._id)) { %>
-            <div class="d-flex gap-2">
+          <!-- Edit & Delete Buttons (Visible Only to Owner) -->
+          <% if (currentUser && listing.owner && String(listing.owner._id) === String(currentUser._id)) { %>
+            <div class="d-flex gap-2 mb-3">
               <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-primary px-4 rounded-pill">✏️ Edit</a>
               <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" class="d-inline">
                 <button class="btn btn-outline-danger px-4 rounded-pill"
@@ -26,33 +27,40 @@
               </form>
             </div>
           <% } %>
-
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Review Form -->
-  <div class="row justify-content-center mb-5">
-    <div class="col-md-10 col-lg-8">
-      <div class="card shadow-sm border-0 rounded-4 p-4">
-        <h4 class="fw-bold text-secondary mb-4">Leave a Review</h4>
-        <form id="reviewForm" action="/listings/<%= listing._id %>/reviews" method="POST" novalidate>
-          <div class="mb-3">
-            <label for="rating" class="form-label">Rating: <span id="rating-value" class="fw-bold">3</span></label>
-            <input type="range" min="1" max="5" step="1" name="review[rating]" class="form-range" id="rating" required>
-          </div>
-          <div class="mb-3">
-            <label for="comment" class="form-label">Comment</label>
-            <textarea name="review[comment]" id="comment" class="form-control rounded-3" rows="4"
-              placeholder="Write your thoughts..." required minlength="10"></textarea>
-            <div class="invalid-feedback">Please write at least 10 characters.</div>
-          </div>
-          <button type="submit" class="btn btn-primary rounded-pill px-4">Submit Review</button>
-        </form>
+  <!-- Review Form (Conditional) -->
+  <% if (currentUser) { %>
+    <div class="row justify-content-center mb-5">
+      <div class="col-md-10 col-lg-8">
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+          <h4 class="fw-bold text-secondary mb-4">Leave a Review</h4>
+          <form id="reviewForm" action="/listings/<%= listing._id %>/reviews" method="POST" novalidate>
+            <div class="mb-3">
+              <label for="rating" class="form-label">Rating: <span id="rating-value" class="fw-bold">3</span></label>
+              <input type="range" min="1" max="5" step="1" name="review[rating]" class="form-range" id="rating" required>
+            </div>
+            <div class="mb-3">
+              <label for="comment" class="form-label">Comment</label>
+              <textarea name="review[comment]" id="comment" class="form-control rounded-3" rows="4"
+                placeholder="Write your thoughts..." required minlength="10"></textarea>
+              <div class="invalid-feedback">Please write at least 10 characters.</div>
+            </div>
+            <button type="submit" class="btn btn-primary rounded-pill px-4">Submit Review</button>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
+  <% } else { %>
+    <div class="text-center my-4">
+      <a href="/login" class="btn btn-outline-primary rounded-pill px-4">
+        Login to leave a review
+      </a>
+    </div>
+  <% } %>
 
   <!-- All Reviews -->
   <div class="row justify-content-center">
@@ -63,6 +71,7 @@
         <% if (listing.reviews.length === 0) { %>
           <div class="text-center text-muted">No reviews yet. Be the first to leave one!</div>
         <% } %>
+
         <% for (let review of listing.reviews) { %>
           <div class="col-12">
             <div class="card h-100 border-0 shadow-sm rounded-4">
@@ -84,14 +93,14 @@
                     </span>
                   </div>
                   <p class="text-muted mt-2 mb-3"><%= review.comment %></p>
-                </div>
 
-                <% if (currentUser && review.author && review.author._id.equals(currentUser._id)) { %>
-                  <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST" class="text-end mt-auto">
-                    <button class="btn btn-sm btn-outline-danger rounded-pill">🗑️ Delete Review</button>
+                  <!-- Always show Delete Review Button -->
+                  <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
+                        method="POST" class="d-inline">
+                    <button class="btn btn-sm btn-outline-danger rounded-pill"
+                            onclick="return confirm('Delete this review?')">🗑️ Delete</button>
                   </form>
-                <% } %>
-                
+                </div>
               </div>
             </div>
           </div>
@@ -108,16 +117,20 @@
   const commentField = document.getElementById("comment");
   const form = document.getElementById("reviewForm");
 
-  ratingSlider.addEventListener("input", () => {
-    ratingValue.textContent = ratingSlider.value;
-  });
+  if (ratingSlider) {
+    ratingSlider.addEventListener("input", () => {
+      ratingValue.textContent = ratingSlider.value;
+    });
+  }
 
-  form.addEventListener("submit", (e) => {
-    if (commentField.value.trim().length < 10) {
-      commentField.classList.add("is-invalid");
-      e.preventDefault();
-    } else {
-      commentField.classList.remove("is-invalid");
-    }
-  });
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      if (commentField.value.trim().length < 10) {
+        commentField.classList.add("is-invalid");
+        e.preventDefault();
+      } else {
+        commentField.classList.remove("is-invalid");
+      }
+    });
+  }
 </script>
