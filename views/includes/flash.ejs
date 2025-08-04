@@ -1,14 +1,50 @@
 <% if (success && success[0]) { %>
-  <div class="alert alert-success alert-dismissible fade show fw-semibold text-center" role="alert">
+  <div class="alert alert-success alert-dismissible fade show fw-semibold text-center custom-alert custom-alert-success" role="alert">
     <%= success[0] %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 <% } %>
-
 
 <% if (error && error[0]) { %>
-  <div class="alert alert-danger alert-dismissible fade show fw-semibold text-center" role="alert">
+  <div class="alert alert-danger alert-dismissible fade show fw-semibold text-center custom-alert custom-alert-danger" role="alert">
     <%= error[0] %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 <% } %>
+
+<style>
+  /* Base Alert Style */
+  .custom-alert {
+    border: none;
+    color: white;
+    border-radius: 12px;
+    animation: slideDownFade 0.6s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Gradient Variants */
+  .custom-alert-success {
+    background: linear-gradient(135deg, #43cea2, #185a9d);
+  }
+
+  .custom-alert-danger {
+    background: linear-gradient(135deg, #ff4e50, #f9d423);
+  }
+
+  /* Slide + Fade Animation */
+  @keyframes slideDownFade {
+    0% { transform: translateY(-15px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  /* Close Button Hover Glow */
+  .btn-close {
+    filter: invert(1);
+    transition: all 0.3s ease;
+  }
+
+  .btn-close:hover {
+    transform: rotate(90deg) scale(1.1);
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.6));
+  }
+</style>

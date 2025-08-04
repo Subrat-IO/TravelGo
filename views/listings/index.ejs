@@ -1,32 +1,142 @@
 <% layout("layouts/boilerplate") %>
-  <% if (success && success.length > 0) { %>
-    
-  <% } %>
+
+<% if (success && success.length > 0) { %>
+  <div class="alert alert-success alert-dismissible fade show fw-semibold text-center custom-alert custom-alert-success" role="alert">
+    <%= success[0] %>
+    <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
 <div class="container py-5">
-  <h3 class="text-center mb-4 display-6 fw-bold">🌍 Explore Your Destination</h3>
-
-
+  <h3 class="text-center mb-4 display-6 fw-bold text-gradient animate-fade-in">🌍 Explore Your Destination</h3>
 
   <div class="row g-4 justify-content-center">
+    <% let delay = 0; %>
     <% for (let listing of allListing) { %>
-      <div class="col-md-4 col-lg-3 d-flex">
-        <div class="card shadow-sm rounded-4 w-100">
-          <img
-            src="<%= listing.image.url %>"
-            class="card-img-top rounded-top-4"
-            alt="<%= listing.title %>"
-            style="height: 200px; object-fit: cover;"
-          />
+      <% delay += 0.1; %> <!-- Increment delay for staggered animation -->
+      <div class="col-md-4 col-lg-3 d-flex animate-stagger" style="animation-delay:<%= delay %>s">
+        <div class="card listing-card shadow-sm border-0 rounded-4 w-100 overflow-hidden">
+          <div class="card-img-container">
+            <img
+              src="<%= listing.image.url %>"
+              class="card-img-top"
+              alt="<%= listing.title %>"
+              style="height: 200px; object-fit: cover;"
+            />
+          </div>
           <div class="card-body d-flex flex-column">
-            <h5 class="card-title fw-semibold text-primary"><%= listing.title %></h5>
+            <h5 class="card-title fw-semibold text-dark mb-1"><%= listing.title %></h5>
             <p class="card-text text-muted small mb-2">
               <%= listing.location %>, <%= listing.country %>
             </p>
-            <p class="card-text text-dark fw-semibold mb-3">₹<%= listing.price.toLocaleString("en-IN") %></p>
-            <a href="/listings/<%= listing._id %>" class="btn btn-outline-primary mt-auto">View Details</a>
+            <p class="card-text price-tag mb-3">₹<%= listing.price.toLocaleString("en-IN") %></p>
+            <a href="/listings/<%= listing._id %>" class="btn btn-gradient mt-auto rounded-pill hover-glow">View Details</a>
           </div>
         </div>
       </div>
     <% } %>
   </div>
 </div>
+
+<!-- Custom Styles -->
+<style>
+  /* Gradient Text */
+  .text-gradient {
+    background: linear-gradient(135deg, #ff4e50, #f9d423);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Gradient Button */
+  .btn-gradient {
+    background: linear-gradient(135deg, #ff4e50, #f9d423);
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+  }
+  .btn-gradient:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+
+  /* Hover Glow */
+  .hover-glow {
+    transition: all 0.3s ease-in-out;
+  }
+  .hover-glow:hover {
+    box-shadow: 0 0 15px rgba(255, 200, 0, 0.5);
+    transform: translateY(-2px);
+  }
+
+  /* Card Effects */
+  .listing-card {
+    transition: all 0.4s ease;
+  }
+  .listing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Image Zoom on Hover */
+  .card-img-container {
+    overflow: hidden;
+  }
+  .card-img-container img {
+    transition: transform 0.5s ease;
+  }
+  .listing-card:hover .card-img-container img {
+    transform: scale(1.08);
+  }
+
+  /* Price Tag */
+  .price-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    color: white;
+    font-weight: bold;
+    padding: 0.35rem 0.75rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    box-shadow: 0 4px 12px rgba(255, 120, 150, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .listing-card:hover .price-tag {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(255, 120, 150, 0.4);
+  }
+
+  /* Animations */
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease forwards;
+    opacity: 0;
+  }
+  .animate-stagger {
+    animation: fadeInUp 0.7s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Custom Alert */
+  .custom-alert-success {
+    background: linear-gradient(135deg, #43cea2, #185a9d);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    animation: fadeIn 0.6s ease forwards;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+  .btn-close {
+    filter: invert(1);
+  }
+  .btn-close:hover {
+    transform: rotate(90deg);
+  }
+</style>

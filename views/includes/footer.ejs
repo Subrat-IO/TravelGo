@@ -1,23 +1,68 @@
-<footer class="bg-light border-top mt-5 py-4">
+<footer class="custom-footer mt-5 py-5">
   <div class="container text-center">
     <div class="f-info d-flex flex-column align-items-center gap-3">
 
       <!-- Social Icons -->
       <div class="f-info-socials d-flex gap-4 justify-content-center">
-        <a href="#" class="text-dark fs-4"><i class='bx bxl-instagram'></i></a>
-        <a href="#" class="text-dark fs-4"><i class='bx bxl-meta'></i></a>
-        <a href="#" class="text-dark fs-4"><i class='bx bxl-linkedin'></i></a>
+        <a href="#" class="social-icon"><i class='bx bxl-instagram'></i></a>
+        <a href="#" class="social-icon"><i class='bx bxl-meta'></i></a>
+        <a href="#" class="social-icon"><i class='bx bxl-linkedin'></i></a>
       </div>
 
       <!-- Brand -->
-      <div class="text-muted small">© 2025 TravelGo Private Limited</div>
+      <div class="text-light small opacity-75">© 2025 TravelGo Private Limited</div>
 
       <!-- Footer Links -->
       <div class="f-info-links d-flex gap-3 justify-content-center">
-        <a href="/privacy" class="text-muted text-decoration-none">Privacy</a>
-        <a href="/terms" class="text-muted text-decoration-none">Terms</a>
+        <a href="/privacy" class="footer-link">Privacy</a>
+        <a href="/terms" class="footer-link">Terms</a>
       </div>
 
     </div>
   </div>
 </footer>
+
+<style>
+  /* Gradient Footer */
+  .custom-footer {
+    background: linear-gradient(135deg, #ff4e50, #f9d423);
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Social Icons */
+  .social-icon {
+    color: white;
+    font-size: 1.8rem;
+    transition: all 0.3s ease;
+  }
+
+  .social-icon:hover {
+    transform: translateY(-4px) scale(1.1);
+    color: #ffe082;
+  }
+
+  /* Footer Links */
+  .footer-link {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .footer-link:hover {
+    color: #ffe082;
+  }
+
+  /* Optional subtle gradient animation */
+  @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .custom-footer {
+    background-size: 200% 200%;
+    animation: gradientMove 12s ease infinite;
+  }
+</style>
