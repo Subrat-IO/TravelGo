@@ -1,6 +1,12 @@
 <% layout("layouts/boilerplate") %>
 
 <div class="container py-5">
+  <!-- Close Button -->
+  <div class="text-end mb-3">
+    <a href="/listings" class="btn btn-danger rounded-circle shadow-sm close-btn" 
+       title="Back to Listings">&times;</a>
+  </div>
+
   <!-- Listing Details -->
   <div class="row justify-content-center mb-5">
     <div class="col-md-10 col-lg-8">
@@ -12,9 +18,17 @@
             <strong>Created by:</strong> <%= listing.owner?.username || "Unknown" %>
           </p>
           <ul class="list-group list-group-flush mb-4 rounded-3 overflow-hidden">
-            <li class="list-group-item bg-light-subtle"><strong>Description:</strong> <%= listing.description %></li>
-            <li class="list-group-item bg-light-subtle"><strong>Price:</strong> ₹<%= listing.price %></li>
-            <li class="list-group-item bg-light-subtle"><strong>Location:</strong> <%= listing.location %>, <%= listing.country %></li>
+            <li class="list-group-item bg-light-subtle">
+              <strong>Description:</strong> <%= listing.description %>
+            </li>
+            <li class="list-group-item bg-light-subtle">
+              <strong>Price:</strong> ₹<%= listing.price %>
+            </li>
+            <li class="list-group-item bg-light-subtle d-flex align-items-center gap-2">
+              <strong>Location:</strong> 
+              <i class='bx bx-globe text-primary fs-5'></i>
+              <%= listing.location %>, <%= listing.country %>
+            </li>
           </ul>
 
           <!-- Edit & Delete Buttons -->
@@ -107,97 +121,18 @@
   </div>
 </div>
 
-<!-- Custom Styles -->
+<!-- Close Button Styles -->
 <style>
-  /* Softer Gradient */
-  .text-gradient-soft {
-    background: linear-gradient(120deg, #6a85b6, #bac8e0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  .close-btn {
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    line-height: 36px;
+    text-align: center;
+    padding: 0;
+    transition: 0.3s;
   }
-
-  /* Buttons */
-  .btn-soft-gradient {
-    background: linear-gradient(120deg, #6a85b6, #bac8e0);
-    color: white;
-    border: none;
-    transition: all 0.3s ease;
-  }
-  .btn-soft-gradient:hover {
-    opacity: 0.95;
-    transform: translateY(-1px);
-  }
-  .hover-glow-soft:hover {
-    box-shadow: 0 0 12px rgba(106, 133, 182, 0.3);
-  }
-
-  /* Cards */
-  .listing-card {
-    background: #fff;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    transition: transform 0.3s ease;
-  }
-  .listing-card:hover {
-    transform: translateY(-3px);
-  }
-
-  .review-card {
-    backdrop-filter: blur(8px);
-    background: rgba(255,255,255,0.85);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-    transition: transform 0.3s ease;
-  }
-  .review-card:hover {
-    transform: translateY(-2px);
-  }
-
-  .listing-image {
-    transition: transform 0.4s ease;
-  }
-  .listing-card:hover .listing-image {
-    transform: scale(1.03);
-  }
-
-  /* Animations */
-  .animate-fade-in {
-    animation: fadeIn 0.8s ease forwards;
-    opacity: 0;
-  }
-  .animate-slide-up {
-    animation: slideUp 0.7s ease forwards;
-    opacity: 0;
-  }
-  @keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-  }
-  @keyframes slideUp {
-    0% { transform: translateY(15px); opacity: 0; }
-    100% { transform: translateY(0); opacity: 1; }
+  .close-btn:hover {
+    transform: rotate(90deg);
   }
 </style>
-
-<!-- Rating Script -->
-<script>
-  const ratingSlider = document.getElementById("rating");
-  const ratingValue = document.getElementById("rating-value");
-  const commentField = document.getElementById("comment");
-  const form = document.getElementById("reviewForm");
-
-  if (ratingSlider) {
-    ratingSlider.addEventListener("input", () => {
-      ratingValue.textContent = ratingSlider.value;
-    });
-  }
-
-  if (form) {
-    form.addEventListener("submit", (e) => {
-      if (commentField.value.trim().length < 10) {
-        commentField.classList.add("is-invalid");
-        e.preventDefault();
-      } else {
-        commentField.classList.remove("is-invalid");
-      }
-    });
-  }
-</script>

@@ -26,6 +26,7 @@
 
     /* Form Container */
     .form-container {
+      position: relative;
       max-width: 700px;
       width: 100%;
       background: white;
@@ -39,6 +40,29 @@
     @keyframes fadeInUp {
       0% { transform: translateY(30px); opacity: 0; }
       100% { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Close Button */
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #f44336;
+      color: white;
+      border: none;
+      font-size: 1.2rem;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.3s;
+      text-decoration: none;
+    }
+    .close-btn:hover {
+      background: #d32f2f;
+      transform: rotate(90deg);
     }
 
     /* Heading */
@@ -89,6 +113,9 @@
 </head>
 <body>
   <div class="container form-container">
+    <!-- Close Button -->
+    <a href="/listings" class="close-btn">&times;</a>
+
     <h3 class="form-heading">Create a New Listing</h3>
     <form action="/listings" method="POST">
       <div class="mb-3">
