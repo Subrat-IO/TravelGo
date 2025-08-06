@@ -63,7 +63,9 @@
                 placeholder="Write your thoughts..." required minlength="10"></textarea>
               <div class="invalid-feedback">Please write at least 10 characters.</div>
             </div>
-            <button type="submit" class="btn btn-soft-gradient rounded-pill px-4 hover-glow-soft">Submit Review</button>
+            <button type="submit" class="btn btn-soft-gradient rounded-pill px-4 hover-glow-soft">
+              Submit Review
+            </button>
           </form>
         </div>
       </div>
@@ -121,8 +123,9 @@
   </div>
 </div>
 
-<!-- Close Button Styles -->
+<!-- Button Styles -->
 <style>
+  /* Close Button */
   .close-btn {
     font-size: 1.5rem;
     width: 40px;
@@ -134,5 +137,21 @@
   }
   .close-btn:hover {
     transform: rotate(90deg);
+  }
+
+  /* Submit Review Button */
+  .btn-soft-gradient {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(37, 117, 252, 0.3);
+    transition: 0.3s ease;
+  }
+  .btn-soft-gradient:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 6px 18px rgba(37, 117, 252, 0.45);
+  }
+  .btn-soft-gradient:active {
+    transform: scale(0.98);
   }
 </style>

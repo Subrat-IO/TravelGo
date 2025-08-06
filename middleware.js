@@ -37,13 +37,12 @@ module.exports.isOwner = async (req, res, next) => {
   next();
 };
 
-// Check if current user is the review author
 module.exports.isReviewAuthor = async (req, res, next) => {
-  const { id, reviewId } = req.params;
+  const { id, reviewId } = req.params; // ✅ must match route
 
   const review = await Review.findById(reviewId);
   if (!review) {
-    req.flash("error", "You are not author of the review");
+    req.flash("error", "Review not found");
     return res.redirect(`/listings/${id}`);
   }
 
@@ -52,6 +51,7 @@ module.exports.isReviewAuthor = async (req, res, next) => {
     return res.redirect(`/listings/${id}`);
   }
 
-  req.review = review; // ✅ Attach review to request
+  req.review = review; // ✅ attach review to request
   next();
 };
+
