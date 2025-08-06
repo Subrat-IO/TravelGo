@@ -1,85 +1,34 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/user");
 const passport = require("passport");
 const { saveRedirectUrl } = require("../middleware");
+const users = require("../controllers/users");
 
 // =========================
 // SIGNUP ROUTES
 // =========================
-
-// Signup GET
-router.get("/signup", (req, res) => {
-    res.render("users/signup");
-});
-
-// Signup POST
-router.post("/signup", async (req, res, next) => {
-    try {
-        const { username, email, password } = req.body;
-
-        const newUser = new User({ email, username });
-        const registeredUser = await User.register(newUser, password);
-
-        // Auto-login after signup
-        req.login(registeredUser, (err) => {
-            if (err) return next(err);
-            req.flash("success", "Welcome to TravelGo!");
-            res.redirect("/listings");
-        });
-
-        console.log("New user registered:", registeredUser.toJSON());
-    } catch (e) {
-        req.flash("error", e.message);
-        res.redirect("/signup");
-    }
-});
+router.get("/signup", users.renderSignup);
+router.post("/signup", users.signup);
 
 // =========================
 // LOGIN ROUTES
 // =========================
+router.get("/login", users.renderLogin);
 
-// Login GET
-router.get("/login", (req, res) => {
-    res.render("users/login.ejs");
-});
-
-// Login POST (with async handling and fallback redirect)
-router.post("/login", saveRedirectUrl, (req, res, next) => {
-    passport.authenticate("local", (err, user, info) => {
-        if (err) return next(err);
-        if (!user) {
-            req.flash("error", info.message);
-            return res.redirect("/login");
-        }
-        req.logIn(user, (err) => {
-            if (err) return next(err);
-            req.flash("success", "Welcome back to TravelGo!");
-            res.redirect(res.locals.redirectUrl || "/listings");
-        });
-    })(req, res, next);
-});
+router.post(
+  "/login",
+  saveRedirectUrl,
+  passport.authenticate("local", {
+    failureFlash: true,
+    failureRedirect: "/login"
+  }),
+  users.login
+);
 
 // =========================
 // LOGOUT ROUTES
 // =========================
-
-// Logout POST (recommended)
-router.post("/logout", (req, res, next) => {
-    req.logout((err) => {
-        if (err) return next(err);
-        req.flash("success", "You are logged out now!");
-        res.redirect("/listings");
-    });
-});
-
-// Optional: Logout GET (if you need simple links, but less secure)
-router.get("/logout", (req, res, next) => {
-    req.logout((err) => {
-        if (err) return next(err);
-        req.flash("success", "You are logged out now!");
-        res.redirect("/listings");
-    });
-});
+router.post("/logout", users.logout);
+router.get("/logout", users.logout); // Optional
 
 module.exports = router;
