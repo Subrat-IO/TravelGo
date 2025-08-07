@@ -53,10 +53,28 @@
         <div class="card review-form-card border-0 rounded-4 p-4 animate-fade-in">
           <h4 class="fw-bold text-secondary mb-4">Leave a Review</h4>
           <form id="reviewForm" action="/listings/<%= listing._id %>/reviews" method="POST" novalidate>
+            
+            <!-- Starability Slot Machine Rating -->
             <div class="mb-3">
-              <label for="rating" class="form-label">Rating: <span id="rating-value" class="fw-bold">3</span></label>
-              <input type="range" min="1" max="5" step="1" name="review[rating]" class="form-range" id="rating" required>
+              <label class="form-label">Rating</label>
+              <fieldset class="starability-slot">
+                <input type="radio" id="rate5" name="review[rating]" value="5" required />
+                <label for="rate5" title="Amazing">5 stars</label>
+
+                <input type="radio" id="rate4" name="review[rating]" value="4" />
+                <label for="rate4" title="Very good">4 stars</label>
+
+                <input type="radio" id="rate3" name="review[rating]" value="3" />
+                <label for="rate3" title="Average">3 stars</label>
+
+                <input type="radio" id="rate2" name="review[rating]" value="2" />
+                <label for="rate2" title="Not good">2 stars</label>
+
+                <input type="radio" id="rate1" name="review[rating]" value="1" />
+                <label for="rate1" title="Terrible">1 star</label>
+              </fieldset>
             </div>
+
             <div class="mb-3">
               <label for="comment" class="form-label">Comment</label>
               <textarea name="review[comment]" id="comment" class="form-control rounded-3" rows="4"
@@ -102,17 +120,19 @@
                         }) %>
                       </small>
                     </div>
-                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill shadow-sm">
-                      ★ <%= review.rating %>/5
-                    </span>
+                    <!-- Read-only Star Display -->
+                    <div class="starability-result" data-rating="<%= review.rating %>"></div>
                   </div>
+
                   <p class="text-muted mt-2 mb-3"><%= review.comment %></p>
 
-                  <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
-                        method="POST" class="d-inline">
-                    <button class="btn btn-sm btn-outline-danger rounded-pill hover-glow-soft"
-                            onclick="return confirm('Delete this review?')">🗑️ Delete</button>
-                  </form>
+                  <% if (currentUser && String(review.author?._id) === String(currentUser._id)) { %>
+                    <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
+                          method="POST" class="d-inline">
+                      <button class="btn btn-sm btn-outline-danger rounded-pill hover-glow-soft"
+                              onclick="return confirm('Delete this review?')">🗑️ Delete</button>
+                    </form>
+                  <% } %>
                 </div>
               </div>
             </div>
@@ -154,4 +174,12 @@
   .btn-soft-gradient:active {
     transform: scale(0.98);
   }
+
+  /* Adjust Starability inside reviews */
+  .review-card .starability-result {
+    font-size: 1.3rem;
+  }
 </style>
+
+<!-- Starability CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/starability/starability-all.min.css">
