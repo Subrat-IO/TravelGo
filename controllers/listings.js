@@ -1,17 +1,23 @@
 const Listing = require("../models/listing");
 
+// ======================
 // INDEX ROUTE
+// ======================
 module.exports.index = async (req, res) => {
   const allListing = await Listing.find({});
   res.render("listings/index.ejs", { allListing });
 };
 
+// ======================
 // RENDER NEW LISTING FORM
+// ======================
 module.exports.renderNew = (req, res) => {
   res.render("listings/new.ejs");
 };
 
+// ======================
 // SHOW SINGLE LISTING
+// ======================
 module.exports.showListing = async (req, res) => {
   const { id } = req.params;
   const listing = await Listing.findById(id)
@@ -29,28 +35,35 @@ module.exports.showListing = async (req, res) => {
   res.render("listings/show.ejs", { listing, currentUser: req.user });
 };
 
+// ======================
 // CREATE LISTING
+// ======================
 module.exports.createListing = async (req, res) => {
   try {
-    const newListing = new Listing(req.body.listing);
-    newListing.owner = req.user._id;
+    const newListing = new Listing({
+      ...req.body.listing,
+      owner: req.user._id,
+      image: { url: req.file?.path, filename: req.file?.filename }
+    });
     await newListing.save();
-    req.flash("success", "New listing created successfully");
     res.redirect(`/listings/${newListing._id}`);
   } catch (err) {
-    console.log("Listing creation error:", err);
-    req.flash("error", "Failed to create listing");
     res.redirect("/listings/new");
   }
 };
 
+
+// ======================
 // RENDER EDIT LISTING FORM
+// ======================
 module.exports.renderEdit = async (req, res) => {
   const listing = req.listing; // fetched in isOwner middleware
   res.render("listings/edit.ejs", { listing });
 };
 
+// ======================
 // UPDATE LISTING
+// ======================
 module.exports.updateListing = async (req, res) => {
   const { id } = req.params;
   await Listing.findByIdAndUpdate(id, req.body.listing, { runValidators: true });
@@ -58,7 +71,9 @@ module.exports.updateListing = async (req, res) => {
   res.redirect(`/listings/${id}`);
 };
 
+// ======================
 // DELETE LISTING
+// ======================
 module.exports.deleteListing = async (req, res) => {
   const { id } = req.params;
   await Listing.findByIdAndDelete(id);

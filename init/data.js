@@ -360,18 +360,6 @@ const sampleListings = [
     country: "Greece",
   },
   {
-    title: "Ice Hotel Adventure",
-    description:
-      "Stay in a hotel made entirely of ice and snow, featuring incredible sculptures and a unique experience.",
-    image: {
-      filename: "listingimage",
-      url: "https://images.unsplash.com/photo-1601758003122-78c6f1c56b44?auto=format&fit=crop&w=800&q=60",
-    },
-    price: 2700,
-    location: "Jukkasjärvi",
-    country: "Sweden",
-  },
-  {
     title: "Floating Cabin in Norway Fjords",
     description:
       "Experience the serenity of Norway's fjords from a floating wooden cabin surrounded by nature.",
@@ -383,18 +371,7 @@ const sampleListings = [
     location: "Geiranger",
     country: "Norway",
   },
-  {
-    title: "Underground Cave Suite",
-    description:
-      "Sleep in a cozy underground cave suite with all modern amenities, hidden from the world above.",
-    image: {
-      filename: "listingimage",
-      url: "https://images.unsplash.com/photo-1583241801059-67a5324c0f8d?auto=format&fit=crop&w=800&q=60",
-    },
-    price: 2100,
-    location: "Cappadocia",
-    country: "Turkey",
-  },
+
   {
     title: "Rainforest Canopy Lodge",
     description:
@@ -418,18 +395,6 @@ const sampleListings = [
     price: 950,
     location: "Merzouga",
     country: "Morocco",
-  },
-  {
-    title: "Himalayan Mountain Lodge",
-    description:
-      "Discover tranquility at the top of the world with this cozy Himalayan lodge.",
-    image: {
-      filename: "listingimage",
-      url: "https://images.unsplash.com/photo-1582719478173-2b8b0e8b0e85?auto=format&fit=crop&w=800&q=60",
-    },
-    price: 2500,
-    location: "Leh",
-    country: "India",
   },
   {
     title: "Venetian Canal Apartment",
@@ -477,18 +442,6 @@ const sampleListings = [
     },
     price: 2200,
     location: "Alleppey",
-    country: "India",
-  },
-  {
-    title: "Tea Estate Stay in Munnar",
-    description:
-      "Wake up to the aroma of fresh tea leaves in this scenic Munnar tea estate cottage.",
-    image: {
-      filename: "listingimage",
-      url: "https://images.pexels.com/photos/158607/tea-plantation-munnar-india-kerala-158607.jpeg?auto=compress&cs=tinysrgb&w=800",
-    },
-    price: 2000,
-    location: "Munnar",
     country: "India",
   },
   {
@@ -551,18 +504,7 @@ const sampleListings = [
     location: "Nainital",
     country: "India",
   },
-  {
-    title: "Coconut Grove Stay in Goa",
-    description:
-      "Stay in a beachside hut surrounded by swaying coconut trees and golden sands.",
-    image: {
-      filename: "listingimage",
-      url: "https://images.pexels.com/photos/240320/pexels-photo-240320.jpeg?auto=compress&cs=tinysrgb&w=800",
-    },
-    price: 2200,
-    location: "Goa",
-    country: "India",
-  },
+
   {
     title: "Mountain Camp in Manali",
     description:
