@@ -43,30 +43,64 @@ module.exports.createListing = async (req, res) => {
     const newListing = new Listing({
       ...req.body.listing,
       owner: req.user._id,
-      image: { url: req.file?.path, filename: req.file?.filename }
+      image: {
+        url: req.file?.path,
+        filename: req.file?.filename
+      }
     });
     await newListing.save();
+    req.flash("success", "New listing created successfully");
     res.redirect(`/listings/${newListing._id}`);
   } catch (err) {
+    console.error(err);
+    req.flash("error", "Error creating listing");
     res.redirect("/listings/new");
   }
 };
 
-
 // ======================
-// RENDER EDIT LISTING FORM
+// RENDER EDIT LISTING FORM (with Cloudinary quality change)
 // ======================
 module.exports.renderEdit = async (req, res) => {
   const listing = req.listing; // fetched in isOwner middleware
+
+  if (listing.image?.url) {
+    // Cloudinary image transformation for better performance
+    listing.image.optimizedUrl = listing.image.url.replace(
+      "/upload/",
+      "/upload/q_auto,f_auto,w_600/"
+    );
+  }
+
   res.render("listings/edit.ejs", { listing });
 };
 
 // ======================
-// UPDATE LISTING
+// UPDATE LISTING (now with file upload support)
 // ======================
 module.exports.updateListing = async (req, res) => {
   const { id } = req.params;
-  await Listing.findByIdAndUpdate(id, req.body.listing, { runValidators: true });
+
+  let listing = await Listing.findById(id);
+
+  if (!listing) {
+    req.flash("error", "Listing not found");
+    return res.redirect("/listings");
+  }
+
+  // Update basic fields
+  listing.set(req.body.listing);
+
+  // If new image uploaded, replace old one
+  if (req.file) {
+    listing.image = {
+      url: req.file.path,
+      filename: req.file.filename
+    };
+  }
+
+  await listing.save();
+
   req.flash("success", "Listing updated successfully");
   res.redirect(`/listings/${id}`);
 };

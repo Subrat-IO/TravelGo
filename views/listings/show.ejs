@@ -1,5 +1,7 @@
 <% layout("layouts/boilerplate") %>
-
+<script>
+ const mapToken = "<%= process.env.MAP_TOKEN %>" 
+</script>
 <div class="container py-5">
   <!-- Close Button -->
   <div class="text-end mb-3">
@@ -31,7 +33,6 @@
             </li>
           </ul>
 
-          <!-- Edit & Delete Buttons -->
           <% if (currentUser && listing.owner && String(listing.owner._id) === String(currentUser._id)) { %>
             <div class="d-flex gap-2 mb-3">
               <a href="/listings/<%= listing._id %>/edit" class="btn btn-soft-gradient px-4 rounded-pill hover-glow-soft">✏️ Edit</a>
@@ -53,8 +54,6 @@
         <div class="card review-form-card border-0 rounded-4 p-4 animate-fade-in">
           <h4 class="fw-bold text-secondary mb-4">Leave a Review</h4>
           <form id="reviewForm" action="/listings/<%= listing._id %>/reviews" method="POST" novalidate>
-            
-            <!-- Starability Slot Machine Rating -->
             <div class="mb-3">
               <label class="form-label">Rating</label>
               <fieldset class="starability-slot">
@@ -120,12 +119,9 @@
                         }) %>
                       </small>
                     </div>
-                    <!-- Read-only Star Display -->
                     <div class="starability-result" data-rating="<%= review.rating %>"></div>
                   </div>
-
                   <p class="text-muted mt-2 mb-3"><%= review.comment %></p>
-
                   <% if (currentUser && String(review.author?._id) === String(currentUser._id)) { %>
                     <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
                           method="POST" class="d-inline">
@@ -141,11 +137,18 @@
       </div>
     </div>
   </div>
+
+  <!-- Map -->
+  <div id="map" class="mt-5 rounded-4 shadow-sm" style="height: 400px;"></div>
 </div>
 
-<!-- Button Styles -->
+<!-- Mapbox -->
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.js"></script>
+
+
+<!-- Extra Styles -->
 <style>
-  /* Close Button */
   .close-btn {
     font-size: 1.5rem;
     width: 40px;
@@ -155,11 +158,7 @@
     padding: 0;
     transition: 0.3s;
   }
-  .close-btn:hover {
-    transform: rotate(90deg);
-  }
-
-  /* Submit Review Button */
+  .close-btn:hover { transform: rotate(90deg); }
   .btn-soft-gradient {
     background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
     color: white;
@@ -171,15 +170,8 @@
     transform: translateY(-2px) scale(1.03);
     box-shadow: 0 6px 18px rgba(37, 117, 252, 0.45);
   }
-  .btn-soft-gradient:active {
-    transform: scale(0.98);
-  }
-
-  /* Adjust Starability inside reviews */
-  .review-card .starability-result {
-    font-size: 1.3rem;
-  }
+  .btn-soft-gradient:active { transform: scale(0.98); }
+  .review-card .starability-result { font-size: 1.3rem; }
 </style>
-
-<!-- Starability CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/starability/starability-all.min.css">
+<script src="/"></script>

@@ -32,7 +32,7 @@ router.route("/new")
 // ======================
 router.route("/:id")
   .get(listingController.showListing)
-  .put(isLoggedIn, isOwner, listingController.updateListing)
+  .put(isLoggedIn, isOwner,upload.single("listing[image]"), listingController.updateListing)
   .delete(isLoggedIn, isOwner, listingController.deleteListing);
 
 // ======================
