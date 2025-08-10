@@ -114,3 +114,19 @@ module.exports.deleteListing = async (req, res) => {
   req.flash("success", "Listing deleted successfully");
   res.redirect("/listings");
 };
+
+// listingsController.js
+module.exports.showListing = async (req, res) => {
+  const listing = await Listing.findById(req.params.id)
+    .populate("owner")
+    .populate({
+      path: "reviews",
+      populate: { path: "author" }
+    });
+
+  res.render("listings/show", {
+    listing,
+    currentUser: req.user,
+    mapToken: process.env.MAP_TOKEN // ✅ pass here
+  });
+};
