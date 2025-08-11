@@ -1,7 +1,6 @@
 const Listing = require("./models/listing");
 const Review = require("./models/review");
 const { reviewSchema } = require("./schema");
-app.use(express.static(path.join(__dirname, "public")));
 
 // =========================
 // AUTHENTICATION MIDDLEWARE
