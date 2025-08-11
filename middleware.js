@@ -1,6 +1,7 @@
-const Listing = require("./models/listings");  // plural + no ../TravelGo
+const Listing = require("./models/listing");
 const Review = require("./models/review");
-const { reviewSchema } = require("./schema");  // adjust if needed
+const { reviewSchema } = require("./schema");
+app.use(express.static(path.join(__dirname, "public")));
 
 // =========================
 // AUTHENTICATION MIDDLEWARE
