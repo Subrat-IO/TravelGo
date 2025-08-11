@@ -1,8 +1,36 @@
 mapboxgl.accessToken = mapToken;
 
+const coords = Array.isArray(listing.geometry.coordinates) && listing.geometry.coordinates.length === 2
+  ? listing.geometry.coordinates
+  : [77.209, 28.6139]; // fallback to Delhi
+
 const map = new mapboxgl.Map({
   container: 'map',
-  style: 'mapbox://styles/mapbox/streets-v12',
-  center: [77.2090, 28.6139], // Delhi default
-  zoom: 9
+  style: 'mapbox://styles/mapbox/dark-v11',
+  center: coords,
+  zoom: 10,
 });
+
+if (coords.length === 2) {
+  // Use your listing location and country in popup HTML
+  const popupHTML = `
+    <div style="font-weight:600; font-size:14px; line-height:1.3;">
+      ${listing.location}, ${listing.country} <br/>
+      <small style="font-weight:400; font-size:15px; color:#666;">
+        Exact Location Provided After Booking
+      </small>
+    </div>
+  `;
+
+  const popup = new mapboxgl.Popup({ offset: 25, closeOnClick: false })
+    .setLngLat(coords)
+    .setHTML(popupHTML)
+    .addTo(map);
+
+  new mapboxgl.Marker({ color: "red" })
+    .setLngLat(coords)
+    .setPopup(popup)
+    .addTo(map);
+} else {
+  console.warn('Invalid coordinates for marker:', coords);
+}

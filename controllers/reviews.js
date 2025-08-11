@@ -1,38 +1,72 @@
 const Listing = require("../models/listing");
-const Review  = require("../models/review");
+const Review = require("../models/review");
 
-
+// ADD REVIEW
 module.exports.addReview = async (req, res) => {
   try {
-    const listing = await Listing.findById(req.params.id);
+    console.log("📩 REQ BODY:", req.body);
+    console.log("👤 REQ USER:", req.user);
+
+    const { id } = req.params;
+
+    // 1. Check listing exists
+    const listing = await Listing.findById(id);
     if (!listing) {
       req.flash("error", "Listing not found");
       return res.redirect("/listings");
     }
 
-    const newReview = new Review(req.body.review);
-    newReview.author = req.user._id;
+    // 2. Validate review data
+    const { review } = req.body;
+    if (!review || !review.rating || !review.comment) {
+      req.flash("error", "Please provide both rating and comment.");
+      return res.redirect(`/listings/${id}`);
+    }
 
+    // 3. Create review
+    const newReview = new Review(review);
+    newReview.author = req.user._id;
     await newReview.save();
-    listing.reviews.push(newReview);
-    await listing.save();
+
+    // 4. Link review to listing WITHOUT triggering full validation
+    listing.reviews.push(newReview._id);
+    await listing.save({ validateBeforeSave: false });
+
+    console.log("✅ Review added:", newReview);
 
     req.flash("success", "New review created successfully!");
-    res.redirect(`/listings/${listing._id}`);
+    res.redirect(`/listings/${id}`);
+
   } catch (err) {
-    console.error("Error saving review:", err);
+    console.error("❌ Error saving review:", err);
     req.flash("error", "Something went wrong while saving the review.");
     res.redirect(`/listings/${req.params.id}`);
   }
 };
 
-
+// DELETE REVIEW
 module.exports.destroyReview = async (req, res) => {
-  const { id, reviewId } = req.params;
+  try {
+    const { id, reviewId } = req.params;
 
-  await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-  await Review.findByIdAndDelete(reviewId);
+    // Remove review reference
+    await Listing.findByIdAndUpdate(
+      id,
+      { $pull: { reviews: reviewId } },
+      { validateBeforeSave: false }
+    );
 
-  req.flash("success", "Review deleted successfully!");
-  res.redirect(`/listings/${id}`);
+    // Delete review document
+    await Review.findByIdAndDelete(reviewId);
+
+    console.log(`✅ Review ${reviewId} deleted from listing ${id}`);
+
+    req.flash("success", "Review deleted successfully!");
+    res.redirect(`/listings/${id}`);
+
+  } catch (err) {
+    console.error("❌ Error deleting review:", err);
+    req.flash("error", "Something went wrong while deleting the review.");
+    res.redirect(`/listings/${req.params.id}`);
+  }
 };

@@ -1,34 +1,62 @@
 <!-- Navbar -->
-<nav class="navbar navbar-expand-md navbar-dark shadow-sm sticky-top custom-navbar">
+<nav class="navbar navbar-expand-md navbar-light shadow-sm sticky-top custom-navbar">
   <div class="container-fluid">
+
+    <!-- Left brand -->
     <a class="navbar-brand d-flex align-items-center gap-2" href="/listings">
-      <i class='bx bx-compass bx-md text-light'></i>
+      <i class='bx bx-compass bx-md text-danger'></i>
       <span class="fw-bold">TravelGo</span>
     </a>
 
+    <!-- Middle search bar -->
+    <form class="search-bar d-none d-md-flex align-items-center mx-auto shadow-sm rounded-pill bg-white px-3">
+      <div class="search-section px-3">
+        <span class="search-title">Where</span>
+        <span class="search-sub">Search destinations</span>
+      </div>
+      <div class="divider"></div>
+      <div class="search-section px-3">
+        <span class="search-title">Check in</span>
+        <span class="search-sub">Add dates</span>
+      </div>
+      <div class="divider"></div>
+      <div class="search-section px-3">
+        <span class="search-title">Check out</span>
+        <span class="search-sub">Add dates</span>
+      </div>
+      <div class="divider"></div>
+      <div class="search-section px-3">
+        <span class="search-title">Who</span>
+        <span class="search-sub">Add guests</span>
+      </div>
+      <button type="submit" class="btn btn-danger rounded-circle ms-2 p-2 d-flex align-items-center justify-content-center">
+        <i class='bx bx-search text-white'></i>
+      </button>
+    </form>
+
+    <!-- Mobile menu toggle -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
       data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
       aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- Right nav items -->
     <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
       <div class="navbar-nav align-items-center">
-        <a class="nav-link px-3" href="/listings">All Listings</a>
-        <a class="nav-link px-3" href="/listings/new">New Listing</a>
+        <a class="nav-link px-3" href="/listings"><i class='bx bx-search'></i> Explore</a>
+        <a class="nav-link px-3" href="/listings/new"><i class='bx bx-home-alt'></i> Airbnb Your Home</a>
 
         <!-- Auth Buttons -->
         <div class="d-flex ms-3">
           <% if (!currentUser) { %>
-            <!-- Show Login & Signup if not logged in -->
-            <a href="/login" class="btn btn-outline-light fw-semibold me-2 hover-glow">
+            <a href="/login" class="btn btn-outline-dark fw-semibold me-2 hover-glow">
               <i class='bx bx-log-in me-1'></i> Login
             </a>
-            <a href="/signup" class="btn btn-light fw-semibold hover-glow">
+            <a href="/signup" class="btn btn-dark fw-semibold hover-glow">
               <i class='bx bx-user-plus me-1'></i> Sign Up
             </a>
           <% } else { %>
-            <!-- Show Logout if logged in -->
             <form action="/logout" method="POST" class="d-inline">
               <button type="submit" class="btn btn-danger fw-semibold hover-glow">
                 <i class='bx bx-log-out me-1'></i> Logout
@@ -41,41 +69,87 @@
   </div>
 </nav>
 
-<!-- Custom Styles -->
 <style>
-  /* Gradient Navbar */
-  .custom-navbar {
-    background: linear-gradient(135deg, #ff4e50, #f9d423);
-    transition: background 0.4s ease-in-out;
-  }
+/* Navbar style */
+.custom-navbar {
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #eee;
+}
 
-  .navbar-nav .nav-link {
-    color: #fff;
-    font-weight: 500;
-    transition: color 0.3s, transform 0.3s;
-  }
+.navbar-nav .nav-link {
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s, transform 0.3s;
+}
 
-  /* Hover animation on nav links */
-  .navbar-nav .nav-link:hover {
-    color: #ffe082;
-    transform: translateY(-2px);
-  }
+.navbar-nav .nav-link:hover {
+  color: #ff385c;
+}
 
-  /* Button hover glow */
-  .hover-glow {
-    transition: all 0.3s ease-in-out;
-  }
+.hover-glow {
+  transition: all 0.3s ease-in-out;
+}
 
-  .hover-glow:hover {
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-    transform: translateY(-2px);
-  }
+.hover-glow:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
 
-  /* Smooth collapse animation */
-  .navbar-collapse {
-    transition: all 0.4s ease-in-out;
+/* Search bar styles */
+.search-bar {
+  height: 50px;
+  border: 1px solid #ddd;
+  max-width: 720px;
+  align-self: center;
+  margin-left: 15% !important;
+}
+
+.search-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 90px;
+}
+
+.search-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #000;
+  line-height: 1.1;
+}
+
+.search-sub {
+  font-size: 12px;
+  color: #888;
+  line-height: 1.1;
+}
+
+.divider {
+  width: 1px;
+  height: 60%;
+  background-color: #ddd;
+  align-self: center;
+}
+
+.search-bar button {
+  width: 36px;
+  height: 36px;
+}
+
+/* Responsiveness */
+@media (max-width: 992px) {
+  .search-bar {
+    max-width: 550px;
   }
+  .search-section {
+    min-width: 75px;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-bar {
+    display: none !important;
+  }
+}
 </style>
-
-<!-- Bootstrap JS Bundle -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

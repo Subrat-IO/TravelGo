@@ -4,11 +4,14 @@ if(process.env.NODE_ENV != "production"){
 // ---------- Dependencies ----------
 const express = require("express");
 const app = express();
+
+
 const mongoose = require("mongoose");
 const path = require("path");
 const methodOverride = require("method-override");
 const engine = require("ejs-mate");
 const session = require("express-session");
+const MongoStore = require('connect-mongo');
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -24,9 +27,9 @@ const reviewRouter = require("./routes/review");
 const userRouter = require("./routes/user");
 
 // ---------- DB Connection ----------
-const MONGO_URL = "mongodb://127.0.0.1:27017/Wanderlust";
-
-mongoose.connect(MONGO_URL)
+// const MONGO_URL = "mongodb://127.0.0.1:27017/Wanderlust";
+const dbUrl = process.env.ATLASDB_URL;
+mongoose.connect(dbUrl)
   .then(() => console.log("✅ Connected to DB"))
   .catch((err) => console.error("❌ DB Connection Error:", err));
 
@@ -35,9 +38,26 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 
+
+
 // ---------- Session & Flash ----------
+
+const store = MongoStore.create({
+  mongoUrl:dbUrl,
+  crypto:{
+    secret:process.env.SECRET,
+  },
+  touchAfter:24 * 3600,
+
+});
+
+store.on("error", ()=>{
+  console.log("error in mongo session store", err)
+})
+
 const sessionOptions = {
-  secret: "mysupersecretcode",
+  store:store,
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -45,6 +65,9 @@ const sessionOptions = {
     maxAge: 7 * 24 * 60 * 60 * 1000,
   }
 };
+
+
+
 app.use(session(sessionOptions));
 app.use(flash());
 
@@ -90,9 +113,9 @@ app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 
 // ---------- Root Route ----------
-app.get("/", (req, res) => {
-  res.send("Hi, I am root.");
-});
+// app.get("/", (req, res) => {
+//   res.send("Hi, I am root.");
+// });
 
 // ---------- Start Server ----------
 app.listen(8080, () => {

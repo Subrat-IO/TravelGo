@@ -4,16 +4,16 @@
 
       <!-- Social Icons -->
       <div class="f-info-socials d-flex gap-4 justify-content-center">
-        <a href="#" class="social-icon"><i class='bx bxl-instagram'></i></a>
-        <a href="#" class="social-icon"><i class='bx bxl-meta'></i></a>
-        <a href="#" class="social-icon"><i class='bx bxl-linkedin'></i></a>
+        <a href="#" class="social-icon" aria-label="Instagram"><i class='bx bxl-instagram'></i></a>
+        <a href="#" class="social-icon" aria-label="Meta"><i class='bx bxl-meta'></i></a>
+        <a href="#" class="social-icon" aria-label="LinkedIn"><i class='bx bxl-linkedin'></i></a>
       </div>
 
       <!-- Brand -->
-      <div class="text-light small opacity-75">© 2025 TravelGo Private Limited</div>
+      <div class="text-muted small opacity-75">© 2025 TravelGo Private Limited</div>
 
       <!-- Footer Links -->
-      <div class="f-info-links d-flex gap-3 justify-content-center">
+      <div class="f-info-links d-flex gap-4 justify-content-center">
         <a href="/privacy" class="footer-link">Privacy</a>
         <a href="/terms" class="footer-link">Terms</a>
       </div>
@@ -23,46 +23,67 @@
 </footer>
 
 <style>
-  /* Gradient Footer */
+  /* Footer base style matching navbar with shadow and rounded corners */
   .custom-footer {
-    background: linear-gradient(135deg, #ff4e50, #f9d423);
-    color: white;
-    position: relative;
-    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(14px);
+    border-top: 2px solid #eee;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    border-radius: 12px 12px 0 0;
+    color: #444;
+    animation: fadeInUp 0.8s ease forwards;
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  /* Fade-in and slide-up animation */
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   /* Social Icons */
   .social-icon {
-    color: white;
-    font-size: 1.8rem;
-    transition: all 0.3s ease;
+    color: #888;
+    font-size: 1.9rem;
+    transition: color 0.35s ease, transform 0.35s ease, filter 0.35s ease;
+    filter: drop-shadow(0 0 0 rgba(0,0,0,0)); /* start with no shadow */
   }
 
   .social-icon:hover {
-    transform: translateY(-4px) scale(1.1);
-    color: #ffe082;
+    color: #ff385c;
+    transform: translateY(-6px) scale(1.15);
+    filter: drop-shadow(0 4px 6px rgba(255, 56, 92, 0.4));
   }
 
   /* Footer Links */
   .footer-link {
-    color: white;
+    color: #666;
+    font-weight: 600;
     text-decoration: none;
-    transition: color 0.3s;
+    font-size: 0.9rem;
+    transition: color 0.35s ease, transform 0.3s ease;
   }
 
   .footer-link:hover {
-    color: #ffe082;
+    color: #ff385c;
+    transform: translateY(-2px);
+    text-decoration: underline;
   }
 
-  /* Optional subtle gradient animation */
-  @keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  /* Brand text */
+  .custom-footer .text-muted {
+    color: #777 !important;
+    font-size: 0.85rem;
   }
 
-  .custom-footer {
-    background-size: 200% 200%;
-    animation: gradientMove 12s ease infinite;
+  /* Responsive tweaks */
+  @media (max-width: 576px) {
+    .f-info-links {
+      flex-direction: column;
+      gap: 1rem;
+    }
   }
 </style>

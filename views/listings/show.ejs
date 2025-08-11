@@ -1,7 +1,11 @@
 <% layout("layouts/boilerplate") %>
 <script>
- const mapToken = "<%= process.env.MAP_TOKEN %>" 
+  const mapToken = "<%= process.env.MAP_TOKEN %>";
+  
+const listing = <%- JSON.stringify(listing) %>;
+
 </script>
+
 <div class="container py-5">
   <!-- Close Button -->
   <div class="text-end mb-3">
@@ -148,30 +152,6 @@
 
 
 <!-- Extra Styles -->
-<style>
-  .close-btn {
-    font-size: 1.5rem;
-    width: 40px;
-    height: 40px;
-    line-height: 36px;
-    text-align: center;
-    padding: 0;
-    transition: 0.3s;
-  }
-  .close-btn:hover { transform: rotate(90deg); }
-  .btn-soft-gradient {
-    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-    color: white;
-    border: none;
-    box-shadow: 0 4px 12px rgba(37, 117, 252, 0.3);
-    transition: 0.3s ease;
-  }
-  .btn-soft-gradient:hover {
-    transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 6px 18px rgba(37, 117, 252, 0.45);
-  }
-  .btn-soft-gradient:active { transform: scale(0.98); }
-  .review-card .starability-result { font-size: 1.3rem; }
-</style>
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/starability/starability-all.min.css">
 <script src="/js/map.js"></script>

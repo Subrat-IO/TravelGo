@@ -1,4 +1,4 @@
-const { string } = require("joi");
+const { string, required } = require("joi");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -14,8 +14,8 @@ const listingSchema = new Schema({
   },
   description: String,
   image: {
-    url:String,
-    filename:String
+    url: String,
+    filename: String,
   },
   price: Number,
   location: String,
@@ -24,14 +24,24 @@ const listingSchema = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: "Review",
-    }
+    },
   ],
   owner: {
     type: Schema.Types.ObjectId,
-    ref: "User",  // <-- reference to your User model
-    required: true
-  }
+    ref: "User",
+    required: true,
+  },
+  geometry: {
+    type: {
+      type: String,
+      enum: ["Point"],
+      required: true,
+    },
+    coordinates: {
+      type: [Number], // [longitude, latitude]
+      required: true,
+    },
+  },
 });
 
-const Listing = mongoose.model("Listing", listingSchema);
-module.exports = Listing;
+module.exports = mongoose.model("Listing", listingSchema);
