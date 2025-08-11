@@ -1,6 +1,6 @@
-const Listing = require("../TravelGo/models/listing");
-const Review = require("../TravelGo/models/review");
-const { reviewSchema } = require("../TravelGo/schema"); // ✅ Import Joi schema
+const Listing = require("./models/listings");  // plural + no ../TravelGo
+const Review = require("./models/review");
+const { reviewSchema } = require("./schema");  // adjust if needed
 
 // =========================
 // AUTHENTICATION MIDDLEWARE
