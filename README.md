@@ -38,7 +38,7 @@ Welcome to **Travel Go** — a full-stack Airbnb-style web application where use
 <img width="494" height="803" alt="Mobile View" src="https://github.com/user-attachments/assets/70473ede-e03c-4f9d-9186-bb91b4e0b5f2" />
 
 ### 📌 Explore Banner
-<img width="1896" height="915" alt="Explore Banner" src="https://github.com/user-attachments/assets/a85bed1f-8498-4ba6-ac36-291e850f1a81" />
+<img width="1893" height="914" alt="Screenshot 2025-08-13 010024" src="https://github.com/user-attachments/assets/08abb611-c467-4285-99ca-c8c9488b811a" />
 
 ### 📌 Map Update Using Mapbox
 <img width="1815" height="774" alt="Mapbox Update" src="https://github.com/user-attachments/assets/34f51fcc-917e-4c21-94a4-13cbe5966ffa" />
