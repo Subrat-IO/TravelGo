@@ -64,17 +64,16 @@ module.exports.createListing = async (req, res) => {
       ...req.body.listing,
       owner: req.user._id,
       image: {
-        url: req.file?.path,
-        filename: req.file?.filename,
+        url: req.file?.path || '',
+        filename: req.file?.filename || '',
       },
       geometry: response.body.features[0].geometry,
     });
 
-    const savedListing = await newListing.save();
-    console.log(savedListing);
+    await newListing.save(); // save but no console.log
 
     req.flash("success", "New listing created successfully");
-    res.redirect(`/listings/${savedListing._id}`);
+    res.redirect(`/listings/${newListing._id}`); // use newListing._id directly
   } catch (err) {
     console.error(err);
     req.flash("error", "Error creating listing");
