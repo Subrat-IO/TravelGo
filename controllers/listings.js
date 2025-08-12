@@ -70,10 +70,12 @@ module.exports.createListing = async (req, res) => {
       geometry: response.body.features[0].geometry,
     });
 
-    await newListing.save(); // save but no console.log
+    await newListing.save();
 
+    const listingUrl = `/listings/${newListing._id}`; // ✅ store URL in a variable
     req.flash("success", "New listing created successfully");
-    res.redirect(`/listings/${newListing._id}`); // use newListing._id directly
+    res.redirect(listingUrl);
+
   } catch (err) {
     console.error(err);
     req.flash("error", "Error creating listing");
