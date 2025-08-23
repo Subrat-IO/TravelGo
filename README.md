@@ -54,7 +54,7 @@ Welcome to **Travel Go** — a full-stack Airbnb-style web application where use
 url- https://travelgo-1wn1.onrender.com/listings
 
 
-### 1. Clone the Repository
+### 2. Clone the Repository
 ```bash
 git clone https://github.com/Subrat-IO/TravelGo.git
 cd TravelGo
