@@ -1,35 +1,30 @@
 <% layout("layouts/boilerplate") %>
+
 <script>
   const mapToken = "<%= process.env.MAP_TOKEN %>";
-  
-const listing = <%- JSON.stringify(listing) %>;
-
+  const listing = <%- JSON.stringify(listing) %>;
+  const currentUser = <%- JSON.stringify(currentUser || null) %>;
 </script>
 
 <div class="container py-5">
   <!-- Close Button -->
   <div class="text-end mb-3">
-    <a href="/listings" class="btn btn-danger rounded-circle shadow-sm close-btn" 
-       title="Back to Listings">&times;</a>
+    <a href="/listings" class="btn btn-danger rounded-circle shadow-sm close-btn" title="Back to Listings">&times;</a>
   </div>
 
   <!-- Listing Details -->
   <div class="row justify-content-center mb-5">
     <div class="col-md-10 col-lg-8">
       <div class="card listing-card border-0 rounded-4 overflow-hidden animate-fade-in">
-        <img src="<%= listing.image.url %>" class="card-img-top listing-image" alt="<%= listing.title %>" />
+        <img src="<%= listing.image?.url || '/images/default.jpg' %>" class="card-img-top listing-image" alt="<%= listing.title %>" />
         <div class="card-body p-4">
           <h2 class="card-title fw-bold text-gradient-soft mb-2"><%= listing.title %></h2>
           <p class="mb-3 text-muted">
             <strong>Created by:</strong> <%= listing.owner?.username || "Unknown" %>
           </p>
           <ul class="list-group list-group-flush mb-4 rounded-3 overflow-hidden">
-            <li class="list-group-item bg-light-subtle">
-              <strong>Description:</strong> <%= listing.description %>
-            </li>
-            <li class="list-group-item bg-light-subtle">
-              <strong>Price:</strong> ₹<%= listing.price %>
-            </li>
+            <li class="list-group-item bg-light-subtle"><strong>Description:</strong> <%= listing.description %></li>
+            <li class="list-group-item bg-light-subtle"><strong>Price:</strong> ₹<%= listing.price %></li>
             <li class="list-group-item bg-light-subtle d-flex align-items-center gap-2">
               <strong>Location:</strong> 
               <i class='bx bx-globe text-primary fs-5'></i>
@@ -41,8 +36,7 @@ const listing = <%- JSON.stringify(listing) %>;
             <div class="d-flex gap-2 mb-3">
               <a href="/listings/<%= listing._id %>/edit" class="btn btn-soft-gradient px-4 rounded-pill hover-glow-soft">✏️ Edit</a>
               <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" class="d-inline">
-                <button class="btn btn-outline-danger px-4 rounded-pill hover-glow-soft"
-                  onclick="return confirm('Are you sure you want to delete this listing?')">🗑️ Delete</button>
+                <button class="btn btn-outline-danger px-4 rounded-pill hover-glow-soft" onclick="return confirm('Are you sure you want to delete this listing?')">🗑️ Delete</button>
               </form>
             </div>
           <% } %>
@@ -61,41 +55,26 @@ const listing = <%- JSON.stringify(listing) %>;
             <div class="mb-3">
               <label class="form-label">Rating</label>
               <fieldset class="starability-slot">
-                <input type="radio" id="rate5" name="review[rating]" value="5" required />
-                <label for="rate5" title="Amazing">5 stars</label>
-
-                <input type="radio" id="rate4" name="review[rating]" value="4" />
-                <label for="rate4" title="Very good">4 stars</label>
-
-                <input type="radio" id="rate3" name="review[rating]" value="3" />
-                <label for="rate3" title="Average">3 stars</label>
-
-                <input type="radio" id="rate2" name="review[rating]" value="2" />
-                <label for="rate2" title="Not good">2 stars</label>
-
-                <input type="radio" id="rate1" name="review[rating]" value="1" />
-                <label for="rate1" title="Terrible">1 star</label>
+                <% for(let i=5; i>=1; i--) { %>
+                  <input type="radio" id="rate<%= i %>" name="review[rating]" value="<%= i %>" <%= i===5 ? 'required' : '' %> />
+                  <label for="rate<%= i %>" title="<%= ['Terrible','Not good','Average','Very good','Amazing'][i-1] %>"><%= i %> stars</label>
+                <% } %>
               </fieldset>
             </div>
 
             <div class="mb-3">
               <label for="comment" class="form-label">Comment</label>
-              <textarea name="review[comment]" id="comment" class="form-control rounded-3" rows="4"
-                placeholder="Write your thoughts..." required minlength="10"></textarea>
+              <textarea name="review[comment]" id="comment" class="form-control rounded-3" rows="4" placeholder="Write your thoughts..." required minlength="10"></textarea>
               <div class="invalid-feedback">Please write at least 10 characters.</div>
             </div>
-            <button type="submit" class="btn btn-soft-gradient rounded-pill px-4 hover-glow-soft">
-              Submit Review
-            </button>
+            <button type="submit" class="btn btn-soft-gradient rounded-pill px-4 hover-glow-soft">Submit Review</button>
           </form>
         </div>
       </div>
     </div>
   <% } else { %>
     <div class="text-center my-4 animate-fade-in">
-      <a href="/login" class="btn btn-outline-primary rounded-pill px-4 hover-glow-soft">
-        Login to leave a review
-      </a>
+      <a href="/login" class="btn btn-outline-primary rounded-pill px-4 hover-glow-soft">Login to leave a review</a>
     </div>
   <% } %>
 
@@ -105,38 +84,32 @@ const listing = <%- JSON.stringify(listing) %>;
       <hr class="mb-5">
       <h4 class="text-center text-dark fw-bold mb-4">All Reviews</h4>
       <div class="row g-4">
-        <% if (listing.reviews.length === 0) { %>
+        <% if (!listing.reviews || listing.reviews.length === 0) { %>
           <div class="text-center text-muted">No reviews yet. Be the first to leave one!</div>
-        <% } %>
-
-        <% for (let review of listing.reviews) { %>
-          <div class="col-12">
-            <div class="card h-100 border-0 rounded-4 review-card animate-slide-up">
-              <div class="card-body d-flex flex-column justify-content-between">
-                <div>
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <div>
-                      <h6 class="mb-0 fw-semibold"><%= review.author?.username || "Anonymous" %></h6>
-                      <small class="text-muted">
-                        <%= new Date(review.createdAt).toLocaleDateString('en-IN', {
-                          day: 'numeric', month: 'short', year: 'numeric'
-                        }) %>
-                      </small>
+        <% } else { %>
+          <% listing.reviews.forEach(review => { %>
+            <div class="col-12">
+              <div class="card h-100 border-0 rounded-4 review-card animate-slide-up">
+                <div class="card-body d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <div>
+                        <h6 class="mb-0 fw-semibold"><%= review.author?.username || "Anonymous" %></h6>
+                        <small class="text-muted"><%= new Date(review.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) %></small>
+                      </div>
+                      <div class="starability-result" data-rating="<%= review.rating %>"></div>
                     </div>
-                    <div class="starability-result" data-rating="<%= review.rating %>"></div>
+                    <p class="text-muted mt-2 mb-3"><%= review.comment %></p>
+                    <% if (currentUser && String(review.author?._id) === String(currentUser._id)) { %>
+                      <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST" class="d-inline">
+                        <button class="btn btn-sm btn-outline-danger rounded-pill hover-glow-soft" onclick="return confirm('Delete this review?')">🗑️ Delete</button>
+                      </form>
+                    <% } %>
                   </div>
-                  <p class="text-muted mt-2 mb-3"><%= review.comment %></p>
-                  <% if (currentUser && String(review.author?._id) === String(currentUser._id)) { %>
-                    <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
-                          method="POST" class="d-inline">
-                      <button class="btn btn-sm btn-outline-danger rounded-pill hover-glow-soft"
-                              onclick="return confirm('Delete this review?')">🗑️ Delete</button>
-                    </form>
-                  <% } %>
                 </div>
               </div>
             </div>
-          </div>
+          <% }) %>
         <% } %>
       </div>
     </div>
@@ -146,12 +119,12 @@ const listing = <%- JSON.stringify(listing) %>;
   <div id="map" class="mt-5 rounded-4 shadow-sm" style="height: 400px;"></div>
 </div>
 
-<!-- Mapbox -->
+<!-- Mapbox CSS & JS -->
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.14.0/mapbox-gl.js"></script>
 
-
-<!-- Extra Styles -->
-
+<!-- Starability CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/starability/starability-all.min.css">
+
+<!-- Map Initialization -->
 <script src="/js/map.js"></script>

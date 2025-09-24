@@ -7,8 +7,14 @@ const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 // INDEX ROUTE
 // ======================
 module.exports.index = async (req, res) => {
-  const allListing = await Listing.find({});
-  res.render("listings/index.ejs", { allListing });
+  try {
+    const allListing = await Listing.find({});
+    res.render("listings/index.ejs", { allListing });
+  } catch (err) {
+    console.error(err);
+    req.flash("error", "Cannot fetch listings");
+    res.redirect("/");
+  }
 };
 
 // ======================
@@ -22,25 +28,30 @@ module.exports.renderNew = (req, res) => {
 // SHOW SINGLE LISTING
 // ======================
 module.exports.showListing = async (req, res) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
+    const listing = await Listing.findById(id)
+      .populate("owner", "username")
+      .populate({
+        path: "reviews",
+        populate: { path: "author", select: "username" },
+      });
 
-  const listing = await Listing.findById(id)
-    .populate("owner", "username")
-    .populate({
-      path: "reviews",
-      populate: { path: "author", select: "username" },
+    if (!listing) {
+      req.flash("error", "Listing you requested does not exist");
+      return res.redirect("/listings");
+    }
+
+    res.render("listings/show.ejs", {
+      listing,
+      currentUser: req.user,
+      mapToken: process.env.MAP_TOKEN,
     });
-
-  if (!listing) {
-    req.flash("error", "Listing you requested does not exist");
-    return res.redirect("/listings");
+  } catch (err) {
+    console.error(err);
+    req.flash("error", "Cannot show listing");
+    res.redirect("/listings");
   }
-
-  res.render("listings/show.ejs", {
-    listing,
-    currentUser: req.user,
-    mapToken: process.env.MAP_TOKEN,
-  });
 };
 
 // ======================
@@ -56,24 +67,24 @@ module.exports.createListing = async (req, res) => {
       .send();
 
     if (!response.body.features.length) {
-      req.flash('error', 'Location not found');
-      return res.redirect('/listings/new');
+      req.flash("error", "Location not found");
+      return res.redirect("/listings/new");
     }
 
     const newListing = new Listing({
       ...req.body.listing,
       owner: req.user._id,
       image: {
-        url: req.file?.path || '',
-        filename: req.file?.filename || '',
+        url: req.file?.path || "",
+        filename: req.file?.filename || "",
       },
       geometry: response.body.features[0].geometry,
     });
 
-    await newListing.save(); // save but no console.log
+    await newListing.save();
 
     req.flash("success", "New listing created successfully");
-    res.redirect(`/listings/${newListing._id}`); // use newListing._id directly
+    res.redirect(`/listings/${newListing._id}`);
   } catch (err) {
     console.error(err);
     req.flash("error", "Error creating listing");
@@ -81,60 +92,95 @@ module.exports.createListing = async (req, res) => {
   }
 };
 
-
 // ======================
-// RENDER EDIT LISTING FORM (with Cloudinary quality change)
+// RENDER EDIT LISTING FORM
 // ======================
 module.exports.renderEdit = async (req, res) => {
-  const listing = req.listing; // fetched in isOwner middleware
+  try {
+    const listing = req.listing; // fetched in isOwner middleware
 
-  if (listing.image?.url) {
-    // Cloudinary image transformation for better performance
-    listing.image.optimizedUrl = listing.image.url.replace(
-      "/upload/",
-      "/upload/q_auto,f_auto,w_600/"
-    );
+    if (listing.image?.url) {
+      // Cloudinary optimization
+      listing.image.optimizedUrl = listing.image.url.replace(
+        "/upload/",
+        "/upload/q_auto,f_auto,w_600/"
+      );
+    }
+
+    res.render("listings/edit.ejs", { listing });
+  } catch (err) {
+    console.error(err);
+    req.flash("error", "Cannot edit listing");
+    res.redirect("/listings");
   }
-
-  res.render("listings/edit.ejs", { listing });
 };
 
 // ======================
-// UPDATE LISTING (now with file upload support)
+// UPDATE LISTING
 // ======================
 module.exports.updateListing = async (req, res) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
+    const listing = await Listing.findById(id);
 
-  const listing = await Listing.findById(id);
+    if (!listing) {
+      req.flash("error", "Listing not found");
+      return res.redirect("/listings");
+    }
 
-  if (!listing) {
-    req.flash("error", "Listing not found");
-    return res.redirect("/listings");
+    // Update fields
+    listing.set(req.body.listing);
+
+    // Replace image if new file uploaded
+    if (req.file) {
+      // Delete old image from Cloudinary
+      if (listing.image?.filename) {
+        await cloudinary.uploader.destroy(listing.image.filename);
+      }
+
+      listing.image = {
+        url: req.file.path,
+        filename: req.file.filename,
+      };
+    }
+
+    await listing.save();
+
+    req.flash("success", "Listing updated successfully");
+    res.redirect(`/listings/${id}`);
+  } catch (err) {
+    console.error(err);
+    req.flash("error", "Error updating listing");
+    res.redirect("/listings");
   }
-
-  // Update basic fields
-  listing.set(req.body.listing);
-
-  // If new image uploaded, replace old one
-  if (req.file) {
-    listing.image = {
-      url: req.file.path,
-      filename: req.file.filename,
-    };
-  }
-
-  await listing.save();
-
-  req.flash("success", "Listing updated successfully");
-  res.redirect(`/listings/${id}`);
 };
 
 // ======================
 // DELETE LISTING
 // ======================
 module.exports.deleteListing = async (req, res) => {
-  const { id } = req.params;
-  await Listing.findByIdAndDelete(id);
-  req.flash("success", "Listing deleted successfully");
-  res.redirect("/listings");
+  try {
+    const { id } = req.params;
+    const listing = await Listing.findById(id);
+
+    if (!listing) {
+      req.flash("error", "Listing not found");
+      return res.redirect("/listings");
+    }
+
+    // Delete image from Cloudinary if exists
+    if (listing.image?.filename) {
+      await cloudinary.uploader.destroy(listing.image.filename);
+    }
+
+    // Delete listing from DB
+    await Listing.findByIdAndDelete(id);
+
+    req.flash("success", "Listing deleted successfully");
+    res.redirect("/listings");
+  } catch (err) {
+    console.error(err);
+    req.flash("error", "Error deleting listing");
+    res.redirect("/listings");
+  }
 };
